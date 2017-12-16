@@ -20,3 +20,7 @@ location on screen
 scale of animation
 start at which frame
 do for a number of times?
+
+
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
