@@ -19,7 +19,7 @@ import (
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 	"log"
 	"path/filepath"
-	//"image/color"
+	"image/color"
 	"image"
 
 )
@@ -58,7 +58,7 @@ var (
 
 func (a *AnimationType) init(name string, w int, h int, numF int) {
 	a.sequence = readimg(name)
-	a.count = 0
+	a.count = 1
 	a.run = false
 	a.width = w
 	a.height = h 
@@ -74,19 +74,20 @@ func (a *AnimationType) animate(screen *ebiten.Image, x float64, y float64) {
 		return
 	}
 	a.count++
-	if a.count < a.speed {
-		x1 = a.currF * a.width
-		y1 = 0
-		x2 = x1 + a.width
-		y2 = a.height
-		r := image.Rect(x1,y1,x2,y2)
-		//fmt.Printf("%d %d %d %d \n",x1,y1,x2,y2)
-		//if a.count == 1 {
-		draw(screen, a.sequence, x, y, r)
+	x1 = a.currF * a.width
+	y1 = 0
+	x2 = x1 + a.width
+	y2 = a.height
+	r := image.Rect(x1,y1,x2,y2)
+	//fmt.Printf("%d %d %d %d \n",x1,y1,x2,y2)
+	//if a.count == 1 {
+	draw(screen, a.sequence, x, y, r)
 		//}
+	if a.count < a.speed {
 		return
 	}
-	a.count = 0
+	//fmt.Print(a.count," anim \n")
+	a.count = 1
 
 	//fmt.Print(a.count," anim \n")
 	a.currF += 1
@@ -118,7 +119,7 @@ func update(screen *ebiten.Image) error {
 		//fmt.Print("running slowly! \n")
 	}
 
-	//screen.Fill(color.NRGBA{255, 255, 0, 0xff})  // yellow
+	screen.Fill(color.NRGBA{255, 255, 0, 0xff})  // yellow
 
   	if mousedownState {
 		if !ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
@@ -182,13 +183,13 @@ func initprog() {
 	//animseq = readimg("sixframes.png")
 	anim1.init("sixframes.png", 50,50, 6)
 	anim1.looping = true
-	anim1.speed = 30
+	anim1.speed = 15
 	anim1.run = true
 	anim1.currF = 0
 
 	anim2.init("sixframes.png", 50,50, 6)
 	anim2.looping = true
-	anim2.speed = 120
+	anim2.speed = 60
 	anim2.run = true
 	anim2.currF = 2
 
