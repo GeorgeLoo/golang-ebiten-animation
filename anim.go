@@ -16,15 +16,23 @@ package main
 import (
 	"fmt"
 	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/ebitenutil"
+	"log"
+	"path/filepath"
+	"image/color"
+
 )
 
 const (
+	version = "0.1"
+	datafolder = "data"
 	screenwidth = 800
 	screenheight = 400
 )
 
 var (
   mousedownState bool
+  animseq *ebiten.Image
 )
 
 
@@ -44,7 +52,9 @@ func update(screen *ebiten.Image) error {
 		//fmt.Print("running slowly! \n")
 	}
 
-  if mousedownState {
+	screen.Fill(color.NRGBA{255, 255, 0, 0xff})  // yellow
+
+  	if mousedownState {
 		if !ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
 			mousedownState = false
 			mouseLeftup()
@@ -58,11 +68,51 @@ func update(screen *ebiten.Image) error {
 		}
 	}
 
-  return nil
+	draw(screen, animseq, 100, 150)
+
+  	return nil
 
 }
 
+func draw(screen *ebiten.Image, image *ebiten.Image, x float64, y float64) {
+	//w, h := image.Size()
+	//fmt.Printf("w %d h %d \n",w,h)
+	opts := &ebiten.DrawImageOptions{}
+	opts.GeoM.Reset()
+	//opts.GeoM.Translate(-float64(w)/2, -float64(h)/2)
+	//opts.GeoM.Rotate(float64(l.pointedDir % 360) * 2 * math.Pi / 360)
+	//opts.GeoM.Scale( 1.0, 1.0 )
+	opts.GeoM.Scale( 1.0, 1.0 )
+	opts.GeoM.Translate(x, y)
+
+	screen.DrawImage(image, opts)
+
+}
+
+
+func readimg(fn string) *ebiten.Image {
+	var err error
+	var fname string
+	fname = filepath.Join(datafolder, fn)
+	img, _, err := ebitenutil.NewImageFromFile(
+		fname,
+		ebiten.FilterNearest)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return img
+
+}
+
+func initprog() {
+
+	animseq = readimg("sixframes.png")
+}
+
+
 func main() {
+
+	initprog()
 
     scale := 1.0
     // Initialize Ebiten, and loop the update() function
