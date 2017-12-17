@@ -69,19 +69,23 @@ func (a *AnimationType) init(name string, w int, h int, numF int) {
 func (a *AnimationType) animate(screen *ebiten.Image, x float64, y float64) {
 	var x1, y1, x2, y2 int
 
+	if !a.run {
+		return
+	}
 	a.count++
 	if a.count < a.speed {
+		x1 = a.currF * a.width
+		y1 = 0
+		x2 = x1 + a.width
+		y2 = a.height
+		r := image.Rect(x1,y1,x2,y2)
+		//fmt.Printf("%d %d %d %d \n",x1,y1,x2,y2)
+		draw(screen, a.sequence, x, y, r)
 		return
 	}
 	a.count = 0
-	fmt.Print(a.count," anim \n")
-	x1 = a.currF * a.width
-	y1 = a.currF * a.height
-	x2 = x1 + a.width
-	y2 = y1 + a.height
-	r := image.Rect(x1,y1,x2,y2)
 
-	draw(screen, a.sequence, x, y, r)
+	//fmt.Print(a.count," anim \n")
 	a.currF += 1
 	if a.currF > a.numFrames - 1 {
 		a.currF = 0
@@ -175,7 +179,7 @@ func initprog() {
 	//animseq = readimg("sixframes.png")
 	anim1.init("sixframes.png", 50,50, 6)
 	anim1.looping = true
-	anim1.speed = 60
+	anim1.speed = 30
 	anim1.run = true
 	anim1.currF = 0
 
