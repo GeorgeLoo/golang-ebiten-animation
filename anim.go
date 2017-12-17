@@ -19,7 +19,7 @@ import (
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 	"log"
 	"path/filepath"
-	"image/color"
+	//"image/color"
 	"image"
 
 )
@@ -52,6 +52,7 @@ var (
   mousedownState bool
   //animseq *ebiten.Image
   anim1 AnimationType
+  anim2 AnimationType
 
 )
 
@@ -80,7 +81,9 @@ func (a *AnimationType) animate(screen *ebiten.Image, x float64, y float64) {
 		y2 = a.height
 		r := image.Rect(x1,y1,x2,y2)
 		//fmt.Printf("%d %d %d %d \n",x1,y1,x2,y2)
+		//if a.count == 1 {
 		draw(screen, a.sequence, x, y, r)
+		//}
 		return
 	}
 	a.count = 0
@@ -115,7 +118,7 @@ func update(screen *ebiten.Image) error {
 		//fmt.Print("running slowly! \n")
 	}
 
-	screen.Fill(color.NRGBA{255, 255, 0, 0xff})  // yellow
+	//screen.Fill(color.NRGBA{255, 255, 0, 0xff})  // yellow
 
   	if mousedownState {
 		if !ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
@@ -134,7 +137,7 @@ func update(screen *ebiten.Image) error {
 	//draw(screen, animseq, 100, 150)
 
 	anim1.animate(screen, 200, 150)
-
+	anim2.animate(screen, 200, 250)
 
   	return nil
 
@@ -182,6 +185,12 @@ func initprog() {
 	anim1.speed = 30
 	anim1.run = true
 	anim1.currF = 0
+
+	anim2.init("sixframes.png", 50,50, 6)
+	anim2.looping = true
+	anim2.speed = 120
+	anim2.run = true
+	anim2.currF = 2
 
 
 }
