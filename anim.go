@@ -7,7 +7,7 @@ anim.go by George Loo 15.12.2017
 
 
 
-
+jj
 */
 
 
@@ -20,6 +20,7 @@ import (
 	"log"
 	"path/filepath"
 	"image/color"
+	"image"
 
 )
 
@@ -74,9 +75,10 @@ func update(screen *ebiten.Image) error {
 
 }
 
-func draw(screen *ebiten.Image, image *ebiten.Image, x float64, y float64) {
+func draw(screen *ebiten.Image, image2draw *ebiten.Image, x float64, y float64) {
 	//w, h := image.Size()
 	//fmt.Printf("w %d h %d \n",w,h)
+	var r image.Rectangle 
 	opts := &ebiten.DrawImageOptions{}
 	opts.GeoM.Reset()
 	//opts.GeoM.Translate(-float64(w)/2, -float64(h)/2)
@@ -85,7 +87,10 @@ func draw(screen *ebiten.Image, image *ebiten.Image, x float64, y float64) {
 	opts.GeoM.Scale( 1.0, 1.0 )
 	opts.GeoM.Translate(x, y)
 
-	screen.DrawImage(image, opts)
+	r = image.Rect(0, 0, 50, 50)
+	opts.SourceRect = &r
+
+	screen.DrawImage(image2draw, opts)
 
 }
 
