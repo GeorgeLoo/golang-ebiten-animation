@@ -53,6 +53,7 @@ var (
   //animseq *ebiten.Image
   anim1 AnimationType
   anim2 AnimationType
+  anim3 AnimationType
 
 )
 
@@ -139,7 +140,8 @@ func update(screen *ebiten.Image) error {
 
 	anim1.animate(screen, 200, 150)
 	anim2.animate(screen, 200, 250)
-
+	anim3.animate(screen, 300, 50)
+	
   	return nil
 
 }
@@ -193,6 +195,11 @@ func initprog() {
 	anim2.run = true
 	anim2.currF = 2
 
+	anim3.init("explosion01.png", 100,100, 15)
+	anim3.looping = true
+	anim3.speed = 15
+	anim3.run = true
+	anim3.currF = 0
 
 }
 
